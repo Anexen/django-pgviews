@@ -7,9 +7,9 @@ import re
 
 import django
 from django.core import exceptions
-from django.db import connection, transaction
+from django.db import connection, router
 from django.db.models.query import QuerySet
-from django.db import models
+from django.db import models, transaction
 from django.utils import six
 from django.apps import apps
 import psycopg2
@@ -267,6 +267,8 @@ class MaterializedView(View):
     """
     @classmethod
     def refresh(self, concurrently=False):
+        using = router.db_for_write(self.__class__)
+        connection = connections[using]
         cursor_wrapper = connection.cursor()
         cursor = cursor_wrapper.cursor
         try:
