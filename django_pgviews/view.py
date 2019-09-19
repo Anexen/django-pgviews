@@ -266,8 +266,8 @@ class MaterializedView(View):
     http://www.postgresql.org/docs/current/static/sql-creatematerializedview.html
     """
     @classmethod
-    def refresh(self, concurrently=False):
-        using = router.db_for_write(self.__class__)
+    def refresh(cls, concurrently=False):
+        using = router.db_for_write(cls)
         connection = connections[using]
         cursor_wrapper = connection.cursor()
         cursor = cursor_wrapper.cursor
