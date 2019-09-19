@@ -7,7 +7,7 @@ import re
 
 import django
 from django.core import exceptions
-from django.db import connection, router
+from django.db import connections, router
 from django.db.models.query import QuerySet
 from django.db import models, transaction
 from django.utils import six
