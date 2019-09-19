@@ -272,12 +272,12 @@ class MaterializedView(View):
         cursor_wrapper = connection.cursor()
         cursor = cursor_wrapper.cursor
         try:
-            if self._concurrent_index is not None and concurrently:
+            if cls._concurrent_index is not None and concurrently:
                 cursor.execute('REFRESH MATERIALIZED VIEW CONCURRENTLY {0}'.format(
-                    self._meta.db_table))
+                    cls._meta.db_table))
             else:
                 cursor.execute('REFRESH MATERIALIZED VIEW {0}'.format(
-                    self._meta.db_table))
+                    cls._meta.db_table))
         finally:
             cursor_wrapper.close()
 
