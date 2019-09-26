@@ -31,4 +31,5 @@ class ViewConfig(apps.AppConfig):
     def ready(self):
         """Find and setup the apps to set the post_migrate hooks for.
         """
-        signals.post_migrate.connect(self.sync_pgviews)
+        # signals.post_migrate.connect(self.sync_pgviews)
+        pass
