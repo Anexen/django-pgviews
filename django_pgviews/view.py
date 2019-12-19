@@ -181,7 +181,8 @@ class ViewMeta(models.base.ModelBase):
             model_spec = (app_label, model_name.lower())
 
             _DEFERRED_PROJECTIONS[model_spec][view_cls].append(field_name)
-            _realise_projections(app_label, model_name)
+
+            apps.lazy_model_operation(realize_deferred_projections, (app_label, model_name))
 
         return view_cls
 
@@ -207,18 +208,6 @@ class View(six.with_metaclass(ViewMeta, models.Model)):
     class Meta:
         abstract = True
         managed = False
-
-
-def _realise_projections(app_label, model_name):
-    """Checks whether the model has been loaded and runs
-    realise_deferred_projections() if it has.
-    """
-    try:
-        model_cls = apps.get_model(app_label, model_name, require_ready=False)
-    except exceptions.AppRegistryNotReady:
-        return
-    if model_cls is not None:
-        realize_deferred_projections(model_cls)
 
 
 class ReadOnlyViewQuerySet(QuerySet):
